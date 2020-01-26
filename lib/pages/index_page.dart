@@ -39,12 +39,12 @@ class _IndexPageState extends State<IndexPage> {
     CartPage(),
     MemberPage()
   ];
-  int currentIndex = 0;
+  int currentIndex = 1;
   var currentPage;
   // 下面的输入initstate就能都出来了1
   @override
   void initState() {
-    currentPage = tabBodies[currentPage];
+    currentPage = tabBodies[currentIndex];
     super.initState();
   }
   // 上面的输入initstate就能都出来了2
