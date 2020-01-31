@@ -17,6 +17,7 @@ print('开始获取数据');
   };
   response = await dio.post(servicePath['homePageContent'],data:formData);
   if(response.statusCode == 200){
+    print(response);
     return response;
   }else{
     throw Exception('后端接口出现异常');
@@ -29,10 +30,10 @@ print('开始获取数据');
       Response response;
       Dio dio = new Dio();
       dio.options.headers = httpHeaderss1;
-      var url = servicePath['homePageContent1'];
+      var url = servicePath['homePageContent2'];
       // var data = {};
       response = await dio.get(url);
-      print(response);
+      // print(response);
       return response;
     }catch(e){
       return print(e);
