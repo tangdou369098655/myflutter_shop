@@ -4,7 +4,7 @@ import '../service/service_method.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import '../config/service_url.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -36,45 +36,60 @@ class _HomePageState extends State<HomePage> {
           future: getHomePageContent1(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<String> list = List();
+             // 下面开始部署轮播图数据1
+              List<String> list = List();//这个用于放轮播图数据
               // // 需要用JSON之前先import 'dart:convert';
               var data = json.decode(snapshot.data.toString());
-              // var data1 = data["carouselItems"];
-              print('111');
-              // print(data1);
               // data就是获取的源数据
-              // data1.forEach((k, v) {
-              data.forEach((k, v) {
-                v.forEach((element) {
-                  list.add(""+(imgUrl + element["img"]));
-                });
-              });
-              print('22');
-              print(list[1]);
-
-              // // 需要用JSON之前先import 'dart:convert';
-              // print(data);
-              // var arr = data["carouselItems"].toList();
-              // print('456111');
-              // print(arr);
-              // var arr1 = arr.map((item) {
-              //   return item = imgUrl + (item['img']).toString();
+              // 这个是获取轮播图数组的第1个办法1
+              // data.forEach((k, v) {
+              //   v.forEach((element) {
+              //     list.add(""+(imgUrl + element["img"]));
+              //   });
               // });
-              // print('4562222');
-              // print(arr);
-              // print('456333');
-              // print(arr1.toList());
+              // print('22');
+              // print(list[1]);
+              // 这个是获取轮播图数组的第1个办法2
+
+              // 这个是获取轮播图数组的第2个办法1
+              // // 需要用JSON之前先import 'dart:convert';
+              print(data);
+              var arr = data["carouselItems"].toList();
+              print('456111');
+              print(arr);
+              var arr1 = arr.map((item) {
+                // 问题1：用这个就没问题
+                list.add(""+(imgUrl + item["img"]));
+                return item = imgUrl + (item['img']);
+              });
+              print('4562222');
+              print(arr);
+              print('456333');
+                // 问题1：用这个就有问题
+              // list = arr1.toList();
+              print(arr1.toList());
+              // 问题2:下面这句话看不懂搞不懂 Map 是什么
               // List<Map> swiper = (data['carouselItems']['img'] as List).cast();
-              return Column(
+              // 这个是获取轮播图数组的第2个办法2
+              // 下面开始部署轮播图数据2
+              // 下面开始部署类别导航数据了哦1
+              List<Map> navigatorList = (data['kinds'] as List).cast();
+              print('打印列表');
+              print(navigatorList);
+              // 下面开始部署类别导航数据了哦2
+              return SingleChildScrollView(
+                child: Column(
                 children: <Widget>[
-                  SwiperDiy(
-                    swiperDateList: list,
-                  )
+                  SwiperDiy( swiperDateList: list,),
+                  TopNavigator(navigatorList: navigatorList)
                 ],
+              ),
               );
             } else {
-              return Center(
-                child: Text('加载中啊。。。。'),
+              return SingleChildScrollView(
+                child: Center(
+                child: Text('加载中啊。。。。',style:TextStyle(fontSize:ScreenUtil().setSp(28))),
+              ),
               );
             }
           },
@@ -88,8 +103,14 @@ class SwiperDiy extends StatelessWidget {
   SwiperDiy({Key key, this.swiperDateList}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // 这个放到这里其他地方就没法用了要放到项目第一个页面
+    // ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
+    print('设备像素密度：${ScreenUtil.pixelRatio}');
+    print('设备的高度：${ScreenUtil.screenHeight}');
+    print('设备的宽度：${ScreenUtil.screenWidth}');
     return Container(
-      height: 333,
+      height: ScreenUtil().setHeight(750),
+      // width: ScreenUtil().setWidth(750),
       child: Swiper(
          itemBuilder: (BuildContext context,int index){
           //  print(index);
@@ -103,6 +124,86 @@ class SwiperDiy extends StatelessWidget {
   }
 }
 //首页轮播组件2
+
+// 类别导航组件1
+class TopNavigator extends StatelessWidget {
+  final List navigatorList;
+  const TopNavigator({Key key, this.navigatorList}) : super(key: key);
+// 内部方法
+Widget _gridViewItemUI(BuildContext context,item){
+  return InkWell(
+    onTap:(){print('点击啦' + item['kind_name']);},
+    child: Column(children: <Widget>[
+      Image.network(imgUrl + item['img'],width:ScreenUtil().setWidth(95)),
+      Text(item['kind_name'],style: TextStyle(color: Colors.pink))
+    ],),
+  );
+}
+// 内部方法
+  @override
+  Widget build(BuildContext context) {
+    if(this.navigatorList.length>10){
+      this.navigatorList.removeRange(10, this.navigatorList.length);
+    }
+    return Container(
+      height: ScreenUtil().setHeight(350),
+      padding: EdgeInsets.all(3.0),
+      child: GridView.count(
+        crossAxisCount: 5,
+        padding: EdgeInsets.all(5.0),
+        children: navigatorList.map((_){
+          return _gridViewItemUI(context, _);
+        }).toList(),
+      ),
+    );
+  }
+}
+// 类别导航组件2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // // 第三次案例 模拟请求头发送请求
 // import 'package:flutter/material.dart';

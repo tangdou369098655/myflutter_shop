@@ -5,6 +5,7 @@ import './cart_page.dart';
 import './category_page.dart';
 import './home_page.dart';
 import './member_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //输入stful
 class IndexPage extends StatefulWidget {
@@ -53,6 +54,8 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 这个要放在初始化第一次使用的页面里
+    ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
     return Scaffold(
       backgroundColor: Color.fromRGBO(244, 245, 245, 1.0),
       bottomNavigationBar: BottomNavigationBar(

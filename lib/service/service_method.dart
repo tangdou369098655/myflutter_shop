@@ -30,7 +30,7 @@ print('开始获取数据');
       Response response;
       Dio dio = new Dio();
       dio.options.headers = httpHeaderss1;
-      var url = servicePath['homePageContent2'];
+      var url = servicePath['homePageContent1'];
       // var data = {};
       response = await dio.get(url);
       // print(response);
