@@ -5,6 +5,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 import '../config/service_url.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -77,11 +78,21 @@ class _HomePageState extends State<HomePage> {
               print('打印列表');
               print(navigatorList);
               // 下面开始部署类别导航数据了哦2
+              // 部署Banner1  
+              // String adPicture = imgUrl + data['kinds'][0]['Mimg'];
+              String adPicture = imgUrl + 'images/index/sbanner4.jpg';
+              // 部署Banner1
+              // 部署拨打电话图片1
+              String leaderImage = imgUrl + data['kinds'][0]['Mimg'];
+              String leaderPhone = '18625578825';
+              // 部署拨打电话图片2
               return SingleChildScrollView(
                 child: Column(
                 children: <Widget>[
                   SwiperDiy( swiperDateList: list,),
-                  TopNavigator(navigatorList: navigatorList)
+                  TopNavigator(navigatorList: navigatorList),
+                  AdBanner(adPicture: adPicture,),
+                  LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone,)
                 ],
               ),
               );
@@ -105,9 +116,9 @@ class SwiperDiy extends StatelessWidget {
   Widget build(BuildContext context) {
     // 这个放到这里其他地方就没法用了要放到项目第一个页面
     // ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
-    print('设备像素密度：${ScreenUtil.pixelRatio}');
-    print('设备的高度：${ScreenUtil.screenHeight}');
-    print('设备的宽度：${ScreenUtil.screenWidth}');
+    // print('设备像素密度：${ScreenUtil.pixelRatio}');
+    // print('设备的高度：${ScreenUtil.screenHeight}');
+    // print('设备的宽度：${ScreenUtil.screenWidth}');
     return Container(
       height: ScreenUtil().setHeight(750),
       // width: ScreenUtil().setWidth(750),
@@ -159,9 +170,46 @@ Widget _gridViewItemUI(BuildContext context,item){
   }
 }
 // 类别导航组件2
+// Banner组件1
+class AdBanner extends StatelessWidget {
+  final String adPicture;
+  const AdBanner({Key key, this.adPicture}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Image.network(adPicture),
+    );
+  }
+}
+// Banner组件2
 
+// 拨打电话模块1
+class LeaderPhone extends StatelessWidget {
+  final String leaderImage;
+  final String leaderPhone;
+  const LeaderPhone({Key key, this.leaderImage, this.leaderPhone}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: InkWell(
+        onTap: _launchURL,
+        child: Image.network(leaderImage),
+      ),
+    );
+  }
+  void _launchURL() async{
+    String url = 'tel:' + leaderPhone;//拨打电话用
+    // String url = 'https://www.baidu.com/';//访问网址用
+    if(await canLaunch(url)){
+      await launch(url);
+    }else{
+      throw '不可以访问拨打电话URL,异常咯~~~';
+    }
+  }
+}
+// 拨打电话模块2
 
 
 

@@ -26,7 +26,7 @@ dependencies:
   dio: ^3.0.8
   flutter_swiper: ^1.1.6
   flutter_screenutil: ^1.0.2
-
+  url_launcher: ^5.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
