@@ -195,13 +195,17 @@ class LeaderPhone extends StatelessWidget {
     return Container(
       child: InkWell(
         onTap: _launchURL,
-        child: Image.network(leaderImage),
+        child: Container(
+          width: ScreenUtil().setWidth(750),
+          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child:Image.network(leaderImage,width:ScreenUtil().setWidth(750),fit:BoxFit.fitWidth),
+        ),
       ),
     );
   }
   void _launchURL() async{
     String url = 'tel:' + leaderPhone;//拨打电话用
-    // String url = 'https://www.baidu.com/';//访问网址用
+    // String url = 'https://www.baidu.com';//访问网址用
     if(await canLaunch(url)){
       await launch(url);
     }else{
