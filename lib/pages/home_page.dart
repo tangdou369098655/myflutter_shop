@@ -10,17 +10,28 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
-class _HomePageState extends State<HomePage> {
+// 页面返回保持原有浏览状态AutomaticKeepAliveClientMixin
+// 需要满足4个条件：
+// 0.with AutomaticKeepAliveClientMixin 
+// 1.必须重写 @override  bool get wantKeepAlive => true;
+// 2.必须是StatefulWidget
+// 3.改造index_page
+// 4.测试一下啊
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   String homePageContent = '正在获取数据';
   @override
   void initState() {
-    getHomePageContent1().then((val) {
-      setState(() {
-        homePageContent = val.toString();
-      });
-    });
+    // getHomePageContent1().then((val) {
+    //   setState(() {
+    //     homePageContent = val.toString();
+    //   });
+    // });
     super.initState();
+  // 测试开始1
+    print('111111111');
+  // 测试开始2
   }
 
   @override
@@ -262,7 +273,7 @@ class Recommend extends StatelessWidget {
             Text('${recommendList[index]['index_title']}',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,),
-            Text('${recommendList[index]['index_price']}'),
+            Text('￥199.00'),
             Text(
               '￥${recommendList[index]['index_price']}',
               style: TextStyle(

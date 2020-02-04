@@ -34,7 +34,7 @@ class _IndexPageState extends State<IndexPage> {
   ];
   // 切换页面代码1
   // 建立了一个列表放的是页面变量1-1
-  final List tabBodies = [
+  final List<Widget> tabBodies = [
     HomePage(),
     CategoryPage(),
     CartPage(),
@@ -68,8 +68,12 @@ class _IndexPageState extends State<IndexPage> {
             currentPage = tabBodies[currentIndex];
           });
         },
-      ),
-      body:currentPage,
+      ),//第二种写法
+      body: IndexedStack( 
+        index: currentIndex,
+        children:  tabBodies,
+      )
+      // body:currentPage,第一种写法不支持保持状态
     );
   }
   
