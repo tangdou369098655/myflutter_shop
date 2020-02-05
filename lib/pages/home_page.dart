@@ -67,16 +67,16 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               // // 需要用JSON之前先import 'dart:convert';
               print(data);
               var arr = data["carouselItems"].toList();
-              print('456111');
-              print(arr);
+              // print('456111');
+              // print(arr);
               var arr1 = arr.map((item) {
                 // 问题1：用这个就没问题
                 list.add(""+(imgUrl + item["img"]));
                 return item = imgUrl + (item['img']);
               });
-              print('4562222');
-              print(arr);
-              print('456333');
+              // print('4562222');
+              // print(arr);/
+              // print('456333');
                 // 问题1：用这个就有问题
               // list = arr1.toList();
               print(arr1.toList());
@@ -86,20 +86,27 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               // 下面开始部署轮播图数据2
               // 下面开始部署类别导航数据了哦1
               List<Map> navigatorList = (data['kinds'] as List).cast();
-              print('打印列表');
-              print(navigatorList);
+              // print('打印列表');
+              // print(navigatorList);
               // 下面开始部署类别导航数据了哦2
               // 部署Banner1  
               // String adPicture = imgUrl + data['kinds'][0]['Mimg'];
               String adPicture = imgUrl + 'images/index/sbanner4.jpg';
               // 部署Banner1
               // 部署拨打电话图片1
-              String leaderImage = imgUrl + data['kinds'][0]['Mimg'];
+              String leaderImage = imgUrl + data['kinds'][6]['Mimg'];
               String leaderPhone = '18625578825';
               // 部署拨打电话图片2
               // 部署商品推荐部门信息1
               List<Map> recommendList = (data['product'] as List).cast();
               // 部署商品推荐部门信息2
+              // 楼层组件1
+              // String floorTitle = imgUrl + data['kinds'][1]['Mimg'];
+              String floorTitle = imgUrl + 'images/index/sbanner1.jpg';
+              List<Map> floorGoodList = (data['kinds'] as List).cast();
+              print('哈哈哈');
+              print(floorGoodList);
+              // 楼层组件2
               return SingleChildScrollView(
                 child: Column(
                 children: <Widget>[
@@ -107,7 +114,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   TopNavigator(navigatorList: navigatorList),
                   AdBanner(adPicture: adPicture,),
                   LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone,),
-                  Recommend(recommendList: recommendList,)
+                  Recommend(recommendList: recommendList,),
+                  FloorTitle(picture_address: floorTitle,),
+                  FloorContent(floorGoodList: floorGoodList,)
                 ],
               ),
               );
@@ -317,8 +326,71 @@ class Recommend extends StatelessWidget {
   }
 }
 // 商品推荐模块2
+// 楼层标题1
+class FloorTitle extends StatelessWidget {
+  final String picture_address;
+  const FloorTitle({Key key, this.picture_address}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(bottom:10.0),
+      child: Image.network(picture_address),
+    );
+  }
+}
+// 楼层标题2
+// 楼层商品1
+class FloorContent extends StatelessWidget {
+  final List floorGoodList;
+  const FloorContent({Key key, this.floorGoodList}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(children: <Widget>[
+        _firstRow(),
+        _otherGoods()
+      ],),
+    );
+  }
+  // 私有方法
+  // 左边一个右边俩图片的布局
+  Widget _firstRow(){
+    return Row(
+      children: <Widget>[
+        _goodsItem(floorGoodList[0]),
+        Column(
+          children: <Widget>[
+            _goodsItem(floorGoodList[1]),
+            _goodsItem(floorGoodList[2]),
+          ],
+        ),
+      ],
+    );
+  }
+  Widget _otherGoods(){
+    return Row(
+      children: <Widget>[
+        _goodsItem(floorGoodList[3]),
+        _goodsItem(floorGoodList[4]),
+      ],
+    );
+  }
+  Widget _goodsItem(Map goods){
+    print(imgUrl + goods['Bimg'].toString().substring(goods['Bimg'].toString().length-3) + 'jpg');
+    return Container(
+      width: ScreenUtil().setWidth(375),
+      child: InkWell(
+        onTap: (){print('点击了楼层商品');},
+        child: Image.network(imgUrl + goods['Bimg'].toString().substring(0,goods['Bimg'].toString().length-3) + 'jpg'),
+      ),
+    );
+  }
+  // 私有方法
+}
+// 楼层商品2
 
 
 
