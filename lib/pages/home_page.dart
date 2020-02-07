@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
               // 这个是获取轮播图数组的第2个办法1
               // // 需要用JSON之前先import 'dart:convert';
-              print(data);
+              // print(data);
               var arr = data["carouselItems"].toList();
               // print('456111');
               // print(arr);
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
               String floorTitle = imgUrl + 'images/index/sbanner1.jpg';
               List<Map> floorGoodList = (data['kinds'] as List).cast();
               print('哈哈哈');
-              print(floorGoodList);
+              // print(floorGoodList);
               // 楼层组件2
               return SingleChildScrollView(
                 child: Column(
@@ -116,7 +116,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
                   LeaderPhone(leaderImage: leaderImage, leaderPhone: leaderPhone,),
                   Recommend(recommendList: recommendList,),
                   FloorTitle(picture_address: floorTitle,),
-                  FloorContent(floorGoodList: floorGoodList,)
+                  FloorContent(floorGoodList: floorGoodList,),
+                  HotGoods()
                 ],
               ),
               );
@@ -379,7 +380,6 @@ class FloorContent extends StatelessWidget {
     );
   }
   Widget _goodsItem(Map goods){
-    print(imgUrl + goods['Bimg'].toString().substring(goods['Bimg'].toString().length-3) + 'jpg');
     return Container(
       width: ScreenUtil().setWidth(375),
       child: InkWell(
@@ -391,7 +391,43 @@ class FloorContent extends StatelessWidget {
   // 私有方法
 }
 // 楼层商品2
+// 火爆专区1
+class HotGoods extends StatefulWidget {
+  HotGoods({Key key}) : super(key: key);
 
+  @override
+  _HotGoodsState createState() => _HotGoodsState();
+}
+
+class _HotGoodsState extends State<HotGoods> {
+  String mystr='-000' ;
+  String mystr1='-000' ;
+  Map mystr2 ;
+  void initState(){
+      print('火爆啊11');
+    super.initState();
+      var formData = {'insale':'1'};
+    requestget('homePageBelowCoten',formData).then((val){
+    // getHomePageBeloConten().then((val){
+      mystr2 = json.decode(val.toString());
+      print(mystr2['product'][0]['index_title']);
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       child: Column(children: <Widget>[
+         Text(mystr2['product'][0]['index_title']),
+         Text('111'),
+         Text('222mystr'),
+        //  Text(mystr),r
+         Text('333data'),
+        //  Text(mystr2),
+       ],),
+    );
+  }
+}
+// 火爆专区2
 
 
 
